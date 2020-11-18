@@ -7,6 +7,10 @@ window.setup(width=800, height=600)
 # prevent window from updating
 window.tracer(0)
 
+# Score
+score_yellow = 0
+score_blue = 0
+
 # Paddle A - yellow square
 paddle_a = t.Turtle()
 paddle_a.speed(0)
@@ -34,6 +38,15 @@ ball.penup()
 ball.goto(0, 0)
 ball.dx = 0.25
 ball.dy = -0.25
+
+# Pen
+pen = t.Turtle()
+pen.speed(0)
+pen.color("white")
+pen.penup()
+pen.hideturtle()
+pen.goto(0, 260)
+pen.write("Player Yellow: 0  Player Blue: 0", align="center", font=("Courier", 18, "normal"))
 
 
 # Moving
@@ -88,10 +101,16 @@ while True:
     if ball.xcor() > 390:
         ball.goto(0, 0)
         ball.dx *= -1
+        score_yellow += 1
+        pen.write(f"Player Yellow: {score_yellow}  Player Blue: {score_blue}", align="center",
+                  font=("Courier", 18, "normal"))
 
     if ball.xcor() < -390:
         ball.goto(0, 0)
         ball.dx *= -1
+        score_blue += 1
+        pen.write(f"Player Yellow: {score_yellow}  Player Blue: {score_blue}", align="center",
+                  font=("Courier", 18, "normal"))
 
     # Paddle and ball collision
     if (-350 < ball.xcor() < -340) and (paddle_a.ycor() + 40 > ball.ycor() > paddle_a.ycor() - 40):
