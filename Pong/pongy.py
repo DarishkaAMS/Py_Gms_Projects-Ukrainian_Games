@@ -1,4 +1,5 @@
 import turtle as t
+import winsound
 
 window = t.Screen()
 window.title("Pong by @DarishkaAMS")
@@ -94,14 +95,18 @@ while True:
         ball.sety(290)
         ball.dy *= -1
 
+
     if ball.ycor() < -290:
         ball.sety(-290)
         ball.dy *= -1
+        winsound.PlaySound("catmeow.mp3", winsound.SND_ASYNC)
 
     if ball.xcor() > 390:
         ball.goto(0, 0)
         ball.dx *= -1
         score_yellow += 1
+        winsound.PlaySound("horse.mp3", winsound.SND_ASYNC)
+        pen.clear()
         pen.write(f"Player Yellow: {score_yellow}  Player Blue: {score_blue}", align="center",
                   font=("Courier", 18, "normal"))
 
@@ -109,6 +114,8 @@ while True:
         ball.goto(0, 0)
         ball.dx *= -1
         score_blue += 1
+        winsound.PlaySound("horse.mp3", winsound.SND_ASYNC)
+        pen.clear()
         pen.write(f"Player Yellow: {score_yellow}  Player Blue: {score_blue}", align="center",
                   font=("Courier", 18, "normal"))
 
