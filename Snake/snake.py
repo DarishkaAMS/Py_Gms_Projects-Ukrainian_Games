@@ -6,7 +6,7 @@ from tkinter import messagebox
 
 
 class Cube(object):
-    def __init__(self, start, dirnx=0, dirny=0, color= (255,0)):
+    def __init__(self, start, dirnx=0, dirny=0, color=(255, 0)):
         pass
 
     def move(self, dirnx, dirny):
@@ -33,7 +33,7 @@ class Snake(object):
         pass
 
 
-def draw_grid(width, rows, surface):
+def draw_grid(w, rows, surface):
     pass
 
 
@@ -50,13 +50,18 @@ def message_box(subject, content):
 
 
 def main():
+    width, height = 500, 500
+    rows = 20
+    win = pygame.display.set_mode((width, height))
+    s = Snake((0, 0, 255), (10, 10))
+    flag = True
+
+    clock = pygame.time.Clock()
+    while flag:
+        pygame.time.delay(50)
+        clock.tick(10)
+        redraw_window(win)
     pass
 
-rows =
-width =
-height =
-
-cube.rows = rows
-cube.w = w
 
 main()
