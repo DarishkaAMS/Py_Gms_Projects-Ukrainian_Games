@@ -22,7 +22,12 @@ def get_next_open_row(board, column):
             return row
 
 
+def print_board(board):
+    print(np.flip(board,0))
+
+
 board = create_board()
+print_board(board)
 game_over = False # As no one has formed the row
 turn = 0
 
@@ -43,7 +48,7 @@ while not game_over:
             row = get_next_open_row(board, column)
             drop_piece(board, row, column, 2)
 
-    print(board)
+    print_board(board)
     turn += 1
     turn %= 2
 
