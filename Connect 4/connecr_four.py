@@ -5,7 +5,7 @@ columns_count = 7
 
 
 def create_board():
-    return np.zeros((7, 7))
+    return np.zeros((rows_count, columns_count))
 
 
 def drop_piece(board, row, column, piece):
@@ -13,7 +13,7 @@ def drop_piece(board, row, column, piece):
 
 
 def is_valid_location(board, column):
-    return board[6][column] == 0
+    return board[rows_count-1][column] == 0
 
 
 def get_next_open_row(board, column):
@@ -23,7 +23,17 @@ def get_next_open_row(board, column):
 
 
 def print_board(board):
-    print(np.flip(board,0))
+    print(np.flip(board, 0))
+
+
+def winning_move(board, piece):
+    # Check all horizontal locations
+    for column in range(columns_count-3):
+        for row in range(rows_count):
+            if board[row][column] == piece and board[row][column+1] == piece and board[row][column+2] == piece and board[row][column+3] == piece:
+                return True
+
+    # Check all vertical locations
 
 
 board = create_board()
@@ -39,6 +49,10 @@ while not game_over:
         if is_valid_location(board, column):
             row = get_next_open_row(board, column)
             drop_piece(board, row, column, 1)
+
+            if winning_move(board, 1):
+                print("Player 1 has won!!! Congratulations!!!")
+                game_over = True
 
     # Ask for Player 2 Input
     else:
