@@ -9,7 +9,7 @@ def create_board():
 
 
 def drop_piece(board, row, column, piece):
-    board[row][column] == piece
+    board[row][column] = piece
 
 
 def is_valid_location(board, column):
@@ -30,10 +30,20 @@ while not game_over:
     # Ask for Player 1 Input
     if turn == 0:
         column = int(input("Player 1, please make your selection (0-7):"))
+
+        if is_valid_location(board, column):
+            row = get_next_open_row(board, column)
+            drop_piece(board, row, column, 1)
+
     # Ask for Player 2 Input
     else:
-        column = int(input("Player 2, please make your selection (0-7)"))
+        column = int(input("Player 2, please make your selection (0-7):"))
 
+        if is_valid_location(board, column):
+            row = get_next_open_row(board, column)
+            drop_piece(board, row, column, 2)
+
+    print(board)
     turn += 1
     turn %= 2
 
