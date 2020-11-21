@@ -1,4 +1,6 @@
 # cautious-octo-dollop
 
-pongy - simple pong for beginners 
+Pong - blue and yellow pong for beginners 
+Snake - classical Kyiv snake game 
+Connect 4 - 
   
