@@ -1,20 +1,26 @@
 import numpy as np
 
+rows_count = 7
+columns_count = 7
+
 
 def create_board():
     return np.zeros((7, 7))
 
 
-def drop_piece():
-    pass
+def drop_piece(board, row, column, piece):
+    board[row][column] == piece
 
 
 def is_valid_location(board, column):
     return board[6][column] == 0
 
 
-def get_next_open_row():
-    pass
+def get_next_open_row(board, column):
+    for row in range(rows_count):
+        if board[row][column] == 0:
+            return row
+
 
 board = create_board()
 game_over = False # As no one has formed the row
