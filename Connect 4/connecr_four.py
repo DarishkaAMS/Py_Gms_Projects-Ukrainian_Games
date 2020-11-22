@@ -1,6 +1,7 @@
 import numpy as np
 import pygame
 import sys
+import math
 
 rows_count = 6
 columns_count = 7
@@ -64,7 +65,6 @@ def draw_board(board):
                                 radius)
 
 
-
 board = create_board()
 print_board(board)
 game_over = False # As no one has formed the row
@@ -90,28 +90,31 @@ while not game_over:
         if event.type == pygame.QUIT:
             sys.exit()
         if event.type == pygame.MOUSEBUTTONDOWN:
-            print('')
+            # print(event.pos) - to get the position of the click
             # Ask for Player 1 Input
-            # if turn == 0:
-            #     column = int(input("Player 1, please make your selection (0-7):"))
-            #
-            #     if is_valid_location(board, column):
-            #         row = get_next_open_row(board, column)
-            #         drop_piece(board, row, column, 1)
-            #
-            #         if winning_move(board, 1):
-            #             print("Player 1 has won!!! Congratulations!!!")
-            #             game_over = True
-            #
-            # # Ask for Player 2 Input
-            # else:
-            #     column = int(input("Player 2, please make your selection (0-7):"))
-            #
-            #     if is_valid_location(board, column):
-            #         row = get_next_open_row(board, column)
-            #         drop_piece(board, row, column, 2)
+            if turn == 0:
+                pos_x = event.pos[0]
+                column = int(math.floor(pos_x/square_size))
+                # column = int(input("Player 1, please make your selection (0-7):"))
 
-            # print_board(board)
-            # turn += 1
-            # turn %= 2
+                if is_valid_location(board, column):
+                    row = get_next_open_row(board, column)
+                    drop_piece(board, row, column, 1)
+
+                    if winning_move(board, 1):
+                        print("Player 1 has won!!! Congratulations!!!")
+                        game_over = True
+
+            # Ask for Player 2 Input
+            else:
+                pos_x = event.pos[0]
+                column = int(math.floor(pos_x/square_size))
+
+                if is_valid_location(board, column):
+                    row = get_next_open_row(board, column)
+                    drop_piece(board, row, column, 2)
+
+            print_board(board)
+            turn += 1
+            turn %= 2
 
