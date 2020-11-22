@@ -55,7 +55,14 @@ def winning_move(board, piece):
 
 
 def draw_board(board):
-    pass
+    for column in range(columns_count):
+        for row in range(rows_count):
+            pygame.draw.rect(screen, (255, 229, 229),
+                             (column*square_size, row*square_size+square_size, square_size, square_size))
+            pygame.draw.circle(screen, (0, 0, 0),
+                               (int(column*square_size + square_size/2), int(row*square_size+square_size+square_size/2)),
+                                radius)
+
 
 
 board = create_board()
@@ -68,9 +75,14 @@ pygame.init()
 square_size = 100
 square_width = columns_count * square_size
 square_height = (rows_count + 1)* square_size
-
 total_size = (square_width, square_height)
+
+radius = int(square_size/2 - 5)
+
 screen = pygame.display.set_mode(total_size)
+draw_board(board)
+pygame.display.update()
+
 
 while not game_over:
 
