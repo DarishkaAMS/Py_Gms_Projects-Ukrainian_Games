@@ -144,3 +144,6 @@ while not game_over:
             draw_board(board)
             turn += 1
             turn %= 2
+
+            if game_over:
+                pygame.time.wait(3000)
