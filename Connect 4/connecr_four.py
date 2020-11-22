@@ -104,6 +104,17 @@ while not game_over:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
+
+        if event.type == pygame.MOUSEMOTION:
+            pygame.draw.rect(screen, (0, 0, 0), (0,0, square_width, square_size))
+            pos_x = event.pos[0]
+            if turn == 0:
+                pygame.draw.circle(screen, (255, 255, 0), (pos_x, int(square_size/2)), radius)
+            else:
+                pygame.draw.circle(screen, (0, 153, 255), (pos_x, int(square_size/2)), radius)
+
+        pygame.display.update()
+
         if event.type == pygame.MOUSEBUTTONDOWN:
             # print(event.pos) - to get the position of the click
             # Ask for Player 1 Input
