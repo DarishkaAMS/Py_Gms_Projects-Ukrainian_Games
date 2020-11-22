@@ -34,7 +34,10 @@ def winning_move(board, piece):
                 return True
 
     # Check all vertical locations
-
+    for column in range(columns_count):
+        for row in range(rows_count - 3):
+            if board[row][column] == piece and board[row+1][column] == piece and board[row+2][column] == piece and board[row+3][column] == piece:
+                return True
 
 board = create_board()
 print_board(board)
