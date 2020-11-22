@@ -87,6 +87,7 @@ game_over = False  # As no one has formed the row
 turn = 0
 
 pygame.init()
+pygame.font.init()
 
 square_size = 100
 square_width = columns_count * square_size
@@ -99,6 +100,8 @@ screen = pygame.display.set_mode(total_size)
 draw_board(board)
 pygame.display.update()
 
+game_font = pygame.font.SysFont("monospace", 75)
+
 while not game_over:
 
     for event in pygame.event.get():
@@ -106,7 +109,7 @@ while not game_over:
             sys.exit()
 
         if event.type == pygame.MOUSEMOTION:
-            pygame.draw.rect(screen, (0, 0, 0), (0,0, square_width, square_size))
+            pygame.draw.rect(screen, (0, 0, 0), (0, 0, square_width, square_size))
             pos_x = event.pos[0]
             if turn == 0:
                 pygame.draw.circle(screen, (255, 255, 0), (pos_x, int(square_size/2)), radius)
@@ -116,6 +119,7 @@ while not game_over:
         pygame.display.update()
 
         if event.type == pygame.MOUSEBUTTONDOWN:
+            pygame.draw.rect(screen, (0, 0, 0), (0, 0, square_width, square_size))
             # print(event.pos) - to get the position of the click
             # Ask for Player 1 Input
             if turn == 0:
@@ -128,7 +132,9 @@ while not game_over:
                     drop_piece(board, row, column, 1)
 
                     if winning_move(board, 1):
-                        print("Player 1 has won!!! Congratulations!!!")
+                        label = game_font.render("Pampushka wins!", 1, (102, 255, 51))
+                        screen.blit(label, (40, 10))
+                        # print("Player 1 has won!!! Congratulations!!!")
                         game_over = True
 
             # Ask for Player 2 Input
@@ -139,6 +145,12 @@ while not game_over:
                 if is_valid_location(board, column):
                     row = get_next_open_row(board, column)
                     drop_piece(board, row, column, 2)
+
+                    if winning_move(board, 2):
+                        label = game_font.render("Galushka wins!", 1, (102, 255, 51))
+                        screen.blit(label, (40, 10))
+                        # print("Player 2 has won!!! Congratulations!!!")
+                        game_over = True
 
             print_board(board)
             draw_board(board)
