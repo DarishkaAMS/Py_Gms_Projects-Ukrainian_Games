@@ -1,6 +1,6 @@
 import numpy as np
 
-rows_count = 7
+rows_count = 6
 columns_count = 7
 
 
@@ -39,6 +39,18 @@ def winning_move(board, piece):
             if board[row][column] == piece and board[row+1][column] == piece and board[row+2][column] == piece and board[row+3][column] == piece:
                 return True
 
+    # Check all positively slopped diagonals
+    for column in range(columns_count - 3):
+        for row in range(rows_count - 3):
+            if board[row][column] == piece and board[row+1][column+1] == piece and board[row+2][column+2] == piece and board[row+3][column+3] == piece:
+                return True
+
+    # Check all negatively slopped diagonals
+    for column in range(columns_count - 3):
+        for row in range(3, rows_count):
+            if board[row][column] == piece and board[row-1][column+1] == piece and board[row-2][column+2] == piece and board[row-3][column+3] == piece:
+                return True
+4
 board = create_board()
 print_board(board)
 game_over = False # As no one has formed the row
