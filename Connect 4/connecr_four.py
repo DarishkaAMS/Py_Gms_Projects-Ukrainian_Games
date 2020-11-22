@@ -39,30 +39,43 @@ def winning_move(board, piece):
     # Check all vertical locations
     for column in range(columns_count):
         for row in range(rows_count - 3):
-            if board[row][column] == piece and board[row+1][column] == piece and board[row+2][column] == piece and board[row+3][column] == piece:
+            if board[row][column] == piece and board[row+1][column] == piece \
+                    and board[row+2][column] == piece and board[row+3][column] == piece:
                 return True
 
     # Check all positively slopped diagonals
     for column in range(columns_count - 3):
         for row in range(rows_count - 3):
-            if board[row][column] == piece and board[row+1][column+1] == piece and board[row+2][column+2] == piece and board[row+3][column+3] == piece:
+            if board[row][column] == piece and board[row+1][column+1] == piece \
+                    and board[row+2][column+2] == piece and board[row+3][column+3] == piece:
                 return True
 
     # Check all negatively slopped diagonals
     for column in range(columns_count - 3):
         for row in range(3, rows_count):
-            if board[row][column] == piece and board[row-1][column+1] == piece and board[row-2][column+2] == piece and board[row-3][column+3] == piece:
+            if board[row][column] == piece and board[row-1][column+1] == piece \
+                    and board[row-2][column+2] == piece and board[row-3][column+3] == piece:
                 return True
 
 
 def draw_board(board):
     for column in range(columns_count):
         for row in range(rows_count):
-            pygame.draw.rect(screen, (255, 229, 229),
+            pygame.draw.rect(screen, (0, 0, 0),
                              (column*square_size, row*square_size+square_size, square_size, square_size))
-            pygame.draw.circle(screen, (0, 0, 0),
-                               (int(column*square_size + square_size/2), int(row*square_size+square_size+square_size/2)),
-                                radius)
+            if board[row][column] == 0:
+                pygame.draw.circle(screen, (255, 255, 255),
+                                   (int(column*square_size + square_size/2),
+                                    int(row*square_size+square_size+square_size/2)), radius)
+            elif board[row][column] == 1:
+                pygame.draw.circle(screen, (255, 255, 0),
+                                   (int(column*square_size + square_size/2),
+                                    int(row*square_size+square_size+square_size/2)), radius)
+            elif board[row][column] == 2:
+                pygame.draw.circle(screen, (0, 153, 255),
+                                   (int(column*square_size + square_size/2),
+                                    int(row*square_size+square_size+square_size/2)), radius)
+    pygame.display.update()
 
 
 board = create_board()
@@ -115,6 +128,7 @@ while not game_over:
                     drop_piece(board, row, column, 2)
 
             print_board(board)
+            draw_board(board)
             turn += 1
             turn %= 2
 
