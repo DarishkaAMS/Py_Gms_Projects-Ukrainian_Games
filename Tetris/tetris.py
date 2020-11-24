@@ -180,7 +180,15 @@ def draw_text_middle(text, size, color, surface):
 
 
 def draw_grid(surface, grid):
-    pass
+    start_x = top_left_x
+    start_y = top_left_y
+
+    for i in range(len(grid)):
+        pygame.draw.line(surface, (120, 120, 120), (start_x, start_y * i * block_size),
+                         (start_x + play_width, start_y * i * block_size))
+        for j in range(len(grid[i])):
+            pygame.draw.line(surface, (120, 120, 120), (start_x + j * block_size, start_y),
+                             (start_x + j * block_size, start_y + play_height))
 
 
 def clear_rows(grid, locked):
