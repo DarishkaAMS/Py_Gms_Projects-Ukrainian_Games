@@ -210,7 +210,7 @@ def draw_window(surface, grid):
     pygame.display.update()
 
 
-def main():
+def main(win):
     locked_position = {}
     grid = create_grid(locked_position)
 
@@ -244,7 +244,7 @@ def main():
                     if not(valid_space(current_piece, grid)):
                         current_piece -= 1
 
-        draw_window(surface, grid)
+        draw_window(win, grid)
 
 
 def main_menu(win):
