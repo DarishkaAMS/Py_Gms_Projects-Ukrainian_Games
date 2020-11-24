@@ -134,11 +134,18 @@ T = [['.....',
 
 shapes = [S, Z, I, O, J, L, T]
 shape_colors = [(0, 255, 0), (255, 0, 0), (0, 255, 255), (255, 255, 0), (255, 165, 0), (0, 0, 255), (128, 0, 128)]
+
+
 # index 0 - 6 represent shape
 
 
 class Piece(object):
-    pass
+    def __init__(self, x, y, shape):
+        self.x = x
+        self.y = y
+        self.shape = shape
+        self.color = shape_colors[shape.index(shape)]
+        self.rotation = 0  # Adding 1 click will change the rotation
 
 
 def create_grid(locked_positions={}):
