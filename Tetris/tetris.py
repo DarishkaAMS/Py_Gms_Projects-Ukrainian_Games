@@ -149,7 +149,14 @@ class Piece(object):
 
 
 def create_grid(locked_positions={}):
-    pass
+    grid = [[(0, 0, 0) for _ in range(10)] for _ in range(20)]  # lopping ten times using _
+
+    for i in range(len(grid)):
+        for j in range(len(grid[i])):
+            if (i, j) in locked_positions:
+                key = locked_positions[(j, i)]
+                grid[i][j] = key
+    return grid
 
 
 def convert_shape_format(shape):
