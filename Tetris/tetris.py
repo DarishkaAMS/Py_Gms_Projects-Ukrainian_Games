@@ -247,8 +247,10 @@ def main():
         draw_window(surface, grid)
 
 
-def main_menu():
-    pass
+def main_menu(win):
+    main(win)
 
 
-main_menu()  # start game
+win = pygame.display.set_mode(s_width, s_height)
+pygame.display.set_caption("Tetris")
+main_menu(win)  # start game
