@@ -287,6 +287,14 @@ def main(win):
                     if not (valid_space(current_piece, grid)):
                         current_piece -= 1
 
+        shape_pos = convert_shape_format(current_piece)
+
+        for i in range(len(shape_pos)):
+            x, y = shape_pos[i]
+            if y > -1:
+                grid[y][x] = current_piece.color
+
+
         draw_window(win, grid)
 
 
