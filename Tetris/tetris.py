@@ -248,7 +248,9 @@ def draw_window(surface, grid):
 
 
 def main(win):
-    locked_position = {}
+    global grid
+
+    locked_position = {}  # (x,y):(255,0,0)
     grid = create_grid(locked_position)
 
     change_piece = False
@@ -257,9 +259,9 @@ def main(win):
     next_piece = get_shape()
     clock = pygame.time.Clock()
     fall_time = 0
-    fall_speed = 0.27
 
     while run:
+        fall_speed = 0.27
         grid = create_grid(locked_position)
         fall_time += clock.get_rawtime()
         clock.tick()
@@ -274,6 +276,8 @@ def main(win):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+                pygame.display.quit()
+                quit()
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
@@ -295,11 +299,13 @@ def main(win):
 
         shape_pos = convert_shape_format(current_piece)
 
+        # add piece to the grid for drawing
         for i in range(len(shape_pos)):
             x, y = shape_pos[i]
             if y > -1:
                 grid[y][x] = current_piece.color
 
+        # if piece hit the ground
         if change_piece:
             for pos in shape_pos:
                 p = (pos[0], pos[1])
