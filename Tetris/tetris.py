@@ -140,22 +140,25 @@ shape_colors = [(0, 255, 0), (255, 0, 0), (0, 255, 255), (255, 255, 0), (255, 16
 
 
 class Piece(object):
-    def __init__(self, x, y, shape):
-        self.x = x
-        self.y = y
+    rows = 20  # y
+    columns = 10  # x
+
+    def __init__(self, column, row, shape):
+        self.x = column
+        self.y = row
         self.shape = shape
         self.color = shape_colors[shapes.index(shape)]
         self.rotation = 0  # Adding 1 click will change the rotation
 
 
 def create_grid(locked_positions={}):
-    grid = [[(0, 0, 0) for _ in range(10)] for _ in range(20)]  # lopping ten times using _
+    grid = [[(0, 0, 0) for x in range(10)] for x in range(20)]
 
     for i in range(len(grid)):
         for j in range(len(grid[i])):
-            if (i, j) in locked_positions:
-                key = locked_positions[(j, i)]
-                grid[i][j] = key
+            if (j, i) in locked_positions:
+                c = locked_positions[(j, i)]
+                grid[i][j] = c
     return grid
 
 
@@ -176,11 +179,11 @@ def convert_shape_format(shape):
 
 
 def valid_space(shape, grid):
-    accepted_pos = [[(j, i) for j in range(10) if grid[i][j] == (0, 0, 0)] for i in range(20)]
-    accepted_pos = [j for sub in accepted_pos for j in sub]  # to convert everything into one list
+    accepted_pos = [[(j, i) for j in range(10) if grid[i][j] == (0,0,0)] for i in range(20)]
+    accepted_pos = [j for sub in accepted_pos for j in sub]
+    formatted_shape = convert_shape_format(shape)
 
-    formated_shape = convert_shape_format(shape)
-    for pos in formated_shape:
+    for pos in formatted_shape:
         if pos not in accepted_pos:
             if pos[1] > -1:
                 return False
@@ -189,13 +192,15 @@ def valid_space(shape, grid):
 
 def check_lost(positions):
     for pos in positions:
-        x,y = pos
+        x, y = pos
         if y < 1:
             return True
     return False
 
 
 def get_shape():
+    global shapes, shape_colors
+
     return Piece(5, 0, random.choice(shapes))
 
 
