@@ -225,7 +225,22 @@ def clear_rows(grid, locked):
 
 
 def draw_next_shape(shape, surface):
-    pass
+    game_font = pygame.font.SysFont('comicans', 30)
+    label = game_font.render('Next Shape', 1, (255, 255, 255))
+
+    start_x = top_left_x + play_width + 50
+    start_y = top_left_y + play_height/2 - 100
+
+    format = shape.shape[shape.rotation % len(shape.shape)]
+
+    for i, line in enumerate(format):
+        row = list(line)
+        for j, col in enumerate(row):
+            if col == '0':
+                pygame.draw.rect(surface, shape.color, (start_x + j * block_size, start_y + i * block_size,
+                                                        block_size, block_size, 0))
+
+    surface.blit(label, (start_x + 10, start_y - 30))
 
 
 def draw_window(surface, grid):
