@@ -329,6 +329,7 @@ def main(win):
             next_piece = get_shape()
             change_piece = False
 
+        draw_next_shape(next_piece, win)
         draw_window(win, grid)
 
         if check_lost(locked_position):
