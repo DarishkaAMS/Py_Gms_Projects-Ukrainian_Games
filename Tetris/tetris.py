@@ -174,7 +174,15 @@ def convert_shape_format(shape):
 
 
 def valid_space(shape, grid):
-    pass
+    accepted_pos = [[(j, i) for j in range(10) if grid[i][j] == (0, 0, 0)] for i in range(20)]
+    accepted_pos = [j for sub in accepted_pos for j in sub]  # to convert everything into one list
+
+    formated_shape = convert_shape_format(shape)
+    for pos in formated_shape:
+        if pos not in accepted_pos:
+            if pos[1] > -1:
+                return False
+    return True
 
 
 def check_lost(positions):
@@ -216,7 +224,7 @@ def draw_window(surface, grid):
     game_font = pygame.font.SysFont('comicans', 60)
     label = font.render("Tetris", 1, (255, 255, 255))
 
-    surface.blit(label, (top_left_x + play_width/2 - play_width()/2, 30))
+    surface.blit(label, (top_left_x + play_width / 2 - play_width() / 2, 30))
 
     for i in range(len(grid)):
         for j in range(len(grid[i])):
@@ -248,19 +256,19 @@ def main(win):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
                     current_piece.x -= 1
-                    if not(valid_space(current_piece, grid)):
+                    if not (valid_space(current_piece, grid)):
                         current_piece.x += 1
                 if event.key == pygame.K_RIGHT:
                     current_piece.x += 1
-                    if not(valid_space(current_piece, grid)):
+                    if not (valid_space(current_piece, grid)):
                         current_piece.x += 1
                 if event.key == pygame.K_DOWN:
                     current_piece.y += 1
-                    if not(valid_space(current_piece, grid)):
+                    if not (valid_space(current_piece, grid)):
                         current_piece.y -= 1
                 if event.key == pygame.K_UP:
                     current_piece.rotation += 1
-                    if not(valid_space(current_piece, grid)):
+                    if not (valid_space(current_piece, grid)):
                         current_piece -= 1
 
         draw_window(win, grid)
