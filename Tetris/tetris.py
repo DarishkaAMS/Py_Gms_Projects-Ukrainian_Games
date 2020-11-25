@@ -144,7 +144,7 @@ class Piece(object):
         self.x = x
         self.y = y
         self.shape = shape
-        self.color = shape_colors[shape.index(shape)]
+        self.color = shape_colors[shapes.index(shape)]
         self.rotation = 0  # Adding 1 click will change the rotation
 
 
@@ -171,6 +171,8 @@ def convert_shape_format(shape):
 
     for i, pos in enumerate(positions):
         positions[i] = (pos[0] - 2, pos[1] - 4)
+
+    return positions
 
 
 def valid_space(shape, grid):
@@ -226,16 +228,15 @@ def draw_window(surface, grid):
 
     pygame.font.init()
     game_font = pygame.font.SysFont('comicans', 60)
-    label = font.render("Tetris", 1, (255, 255, 255))
+    label = game_font.render("Tetris", 1, (255, 255, 255))
 
-    surface.blit(label, (top_left_x + play_width / 2 - play_width() / 2, 30))
+    surface.blit(label, (top_left_x + play_width / 2 - (label.get_width() / 2), 30))
 
     for i in range(len(grid)):
         for j in range(len(grid[i])):
-            pygame.draw.rect(surface, grid[i][j], (top_left_x + j * block_size, top_left_y + i * block_size),
-                             block_size, block_size, 0)
+            pygame.draw.rect(surface, grid[i][j], (top_left_x + j* 30, top_left_y + i * 30, 30, 30),0)
 
-    pygame.draw.rect(surface, (255, 0, 0), (top_left_x, top_left_y), play_width, play_height, 5)
+    pygame.draw.rect(surface, (255, 0, 0), (top_left_x, top_left_y, play_width, play_height), 5)
 
     draw_grid(surface, grid)
     pygame.display.update()
