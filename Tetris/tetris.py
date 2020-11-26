@@ -266,10 +266,7 @@ def draw_next_shape(shape, surface):
 
 
 def update_score(new_score):
-    with open('score.txt', 'r') as f:
-        lines = f.readlines()
-        score = lines[0].strip()
-
+    score = max_score()
     with open('score.txt', 'w') as f:
         if int(score) > new_score:
             f.write(str(score))
@@ -277,7 +274,15 @@ def update_score(new_score):
             f.write(str(new_score))
 
 
-def draw_window(surface, grid, score=0):
+def max_score():
+    with open('score.txt', 'r') as f:
+        lines = f.readlines()
+        score = lines[0].strip()
+
+    return score
+
+
+def draw_window(surface, grid, score=0, last_score=0):
     surface.fill((0, 0, 0))
 
     # Tetris title
@@ -287,11 +292,18 @@ def draw_window(surface, grid, score=0):
 
     surface.blit(label, (top_left_x + play_width / 2 - (label.get_width() / 2), 30))
 
+    # current score
     game_font = pygame.font.SysFont('comicans', 30)
     label = game_font.render('Score: ' + str(score), 1, (255, 255, 255))
-
     start_x = top_left_x + play_width + 50
     start_y = top_left_y + play_height/2 - 100
+
+    surface.blit(label, (start_x + 10, start_y + 150))
+
+    # max_score
+    label = game_font.render('High Score: ' + last_score, 1, (255, 255, 255))
+    start_x = top_left_x - 200
+    start_y = top_left_y + 200
 
     surface.blit(label, (start_x + 10, start_y + 150))
 
@@ -308,6 +320,7 @@ def draw_window(surface, grid, score=0):
 def main(win):
     global grid
 
+    last_score = max_score()
     locked_position = {}  # (x,y):(255,0,0)
     grid = create_grid(locked_position)
 
@@ -377,7 +390,7 @@ def main(win):
             change_piece = False
             score += clear_rows(grid, locked_position) * 10
 
-        draw_window(win, grid, score)
+        draw_window(win, grid, score, last_score)
         draw_next_shape(next_piece, win)
         pygame.display.update()
 
