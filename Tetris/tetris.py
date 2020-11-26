@@ -240,6 +240,8 @@ def clear_rows(grid, locked):
                 new_key = (x, y + inc)
                 locked[new_key] = locked.pop(key)
 
+    return inc
+
 
 def draw_next_shape(shape, surface):
     game_font = pygame.font.SysFont('comicans', 30)
@@ -259,7 +261,7 @@ def draw_next_shape(shape, surface):
     surface.blit(label, (start_x + 10, start_y - 30))
 
 
-def draw_window(surface, grid):
+def draw_window(surface, grid, score=0):
     surface.fill((0, 0, 0))
 
     # Tetris title
@@ -268,6 +270,14 @@ def draw_window(surface, grid):
     label = game_font.render("Tetris", 1, (255, 255, 255))
 
     surface.blit(label, (top_left_x + play_width / 2 - (label.get_width() / 2), 30))
+
+    game_font = pygame.font.SysFont('comicans', 30)
+    label = game_font.render('Score: ' + str(score), 1, (255, 255, 255))
+
+    start_x = top_left_x + play_width + 50
+    start_y = top_left_y + play_height/2 - 100
+
+    surface.blit(label, (start_x + 10, start_y + 150))
 
     for i in range(len(grid)):
         for j in range(len(grid[i])):
@@ -291,6 +301,7 @@ def main(win):
     next_piece = get_shape()
     clock = pygame.time.Clock()
     fall_time = 0
+    score = 0
 
     while run:
         fall_speed = 0.27
@@ -348,9 +359,9 @@ def main(win):
             current_piece = next_piece
             next_piece = get_shape()
             change_piece = False
-            clear_rows(grid, locked_position)
+            score += clear_rows(grid, locked_position) * 10
 
-        draw_window(win, grid)
+        draw_window(win, grid, score)
         draw_next_shape(next_piece, win)
         pygame.display.update()
 
