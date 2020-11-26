@@ -133,7 +133,7 @@ T = [['.....',
       '.....']]
 
 shapes = [S, Z, I, O, J, L, T]
-shape_colors = [(0, 255, 0), (255, 0, 0), (0, 255, 255), (255, 255, 0), (255, 165, 0), (0, 0, 255), (128, 0, 128)]
+shape_colors = [(255, 255, 102), (255, 179, 255), (77, 210, 255), (0, 255, 204), (204, 153, 255), (255, 102, 153), (0, 191, 255)]
 # index 0 - 6 represent shape
 
 
@@ -249,7 +249,7 @@ def clear_rows(grid, locked):
 
 def draw_next_shape(shape, surface):
     game_font = pygame.font.SysFont('comicans', 30)
-    label = game_font.render('Next Shape', 1, (255, 255, 255))
+    label = game_font.render('Next Shape', 1, (255, 255, 102))
 
     start_x = top_left_x + play_width + 50
     start_y = top_left_y + play_height/2 - 100
@@ -288,20 +288,20 @@ def draw_window(surface, grid, score=0, last_score=0):
     # Tetris title
     pygame.font.init()
     game_font = pygame.font.SysFont('comicans', 60)
-    label = game_font.render("Tetris", 1, (255, 255, 255))
+    label = game_font.render("Tetris", 1, (255, 102, 153))
 
     surface.blit(label, (top_left_x + play_width / 2 - (label.get_width() / 2), 30))
 
     # current score
     game_font = pygame.font.SysFont('comicans', 30)
-    label = game_font.render('Score: ' + str(score), 1, (255, 255, 255))
+    label = game_font.render('Score: ' + str(score), 1, (77, 210, 255))
     start_x = top_left_x + play_width + 50
     start_y = top_left_y + play_height/2 - 100
 
     surface.blit(label, (start_x + 10, start_y + 150))
 
     # max_score
-    label = game_font.render('High Score: ' + last_score, 1, (255, 255, 255))
+    label = game_font.render('High Score: ' + last_score, 1, (0, 255, 204))
     start_x = top_left_x - 200
     start_y = top_left_y + 200
 
@@ -312,7 +312,7 @@ def draw_window(surface, grid, score=0, last_score=0):
             pygame.draw.rect(surface, grid[i][j], (top_left_x + j * 30, top_left_y + i * 30, 30, 30), 0)
 
     draw_grid(surface, 20, 10)
-    pygame.draw.rect(surface, (255, 0, 0), (top_left_x, top_left_y, play_width, play_height), 5)
+    pygame.draw.rect(surface, (204, 153, 255), (top_left_x, top_left_y, play_width, play_height), 5)
 
     # pygame.display.update()
 
@@ -413,7 +413,7 @@ def main_menu(win):
     run = True
     while run:
         win.fill((0, 0, 0))
-        draw_text_middle(win, 'Press any key to Play', 60, (255, 255, 255))
+        draw_text_middle(win, 'Press any key to Play', 60, (205, 255, 255))
         pygame.display.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
