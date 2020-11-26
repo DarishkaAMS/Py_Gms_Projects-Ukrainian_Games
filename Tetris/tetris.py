@@ -370,6 +370,9 @@ def main(win):
         pygame.display.update()
 
         if check_lost(locked_position):
+            draw_text_middle(win, "You lost... Sorry", 80, (255, 255, 255))
+            pygame.display.update()
+            pygame.time.delay(1500)
             run = False
 
     pygame.display.quit()
