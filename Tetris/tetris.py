@@ -331,12 +331,19 @@ def main(win):
     clock = pygame.time.Clock()
     fall_time = 0
     score = 0
+    level_time = 0
 
     while run:
         fall_speed = 0.27
         grid = create_grid(locked_position)
         fall_time += clock.get_rawtime()
+        level_time += clock.get_rawtime()
         clock.tick()
+
+        if level_time/1000 > 5:
+            level_time = 0
+            if fall_speed > 0.12:
+                fall_speed -= 0.005
 
         if fall_time/1000 > fall_speed:
             fall_time = 0
