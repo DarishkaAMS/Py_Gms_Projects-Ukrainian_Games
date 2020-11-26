@@ -134,8 +134,6 @@ T = [['.....',
 
 shapes = [S, Z, I, O, J, L, T]
 shape_colors = [(0, 255, 0), (255, 0, 0), (0, 255, 255), (255, 255, 0), (255, 165, 0), (0, 0, 255), (128, 0, 128)]
-
-
 # index 0 - 6 represent shape
 
 
@@ -179,7 +177,7 @@ def convert_shape_format(shape):
 
 
 def valid_space(shape, grid):
-    accepted_pos = [[(j, i) for j in range(10) if grid[i][j] == (0,0,0)] for i in range(20)]
+    accepted_pos = [[(j, i) for j in range(10) if grid[i][j] == (0, 0, 0)] for i in range(20)]
     accepted_pos = [j for sub in accepted_pos for j in sub]
     formatted_shape = convert_shape_format(shape)
 
@@ -208,36 +206,38 @@ def draw_text_middle(text, size, color, surface):
     pass
 
 
-def draw_grid(surface, grid):
+def draw_grid(surface, row, col):
     start_x = top_left_x
     start_y = top_left_y
 
-    for i in range(len(grid)):
+    for i in range(row):
         pygame.draw.line(surface, (120, 120, 120), (start_x, start_y * i * block_size),
                          (start_x + play_width, start_y * i * block_size))
-        for j in range(len(grid[i])):
+        for j in range(col):
             pygame.draw.line(surface, (120, 120, 120), (start_x + j * block_size, start_y),
                              (start_x + j * block_size, start_y + play_height))
 
 
 def clear_rows(grid, locked):
-    increment = 0
+    # need to see if row is clear the shift every other row above down one
+
+    inc = 0
     for i in range(len(grid) - 1, -1, -1):
-        row = grid(i)
+        row = grid[i]
         if (0, 0, 0) not in row:
-            increment += 1
-            index = 1
+            inc += 1
+            # add positions to remove from locked
+            ind = i
             for j in range(len(row)):
                 try:
                     del locked[(j, i)]
                 except:
                     continue
-
-    if increment > 0:
+    if inc > 0:
         for key in sorted(list(locked), key=lambda x: x[1])[::-1]:
             x, y = key
-            if y < index:
-                new_key = (x, y + increment)
+            if y < ind:
+                new_key = (x, y + inc)
                 locked[new_key] = locked.pop(key)
 
 
@@ -262,6 +262,7 @@ def draw_next_shape(shape, surface):
 def draw_window(surface, grid):
     surface.fill((0, 0, 0))
 
+    # Tetris title
     pygame.font.init()
     game_font = pygame.font.SysFont('comicans', 60)
     label = game_font.render("Tetris", 1, (255, 255, 255))
@@ -270,11 +271,11 @@ def draw_window(surface, grid):
 
     for i in range(len(grid)):
         for j in range(len(grid[i])):
-            pygame.draw.rect(surface, grid[i][j], (top_left_x + j* 30, top_left_y + i * 30, 30, 30),0)
+            pygame.draw.rect(surface, grid[i][j], (top_left_x + j * 30, top_left_y + i * 30, 30, 30), 0)
 
+    draw_grid(surface, 20, 10)
     pygame.draw.rect(surface, (255, 0, 0), (top_left_x, top_left_y, play_width, play_height), 5)
 
-    draw_grid(surface, grid)
     # pygame.display.update()
 
 
@@ -315,18 +316,21 @@ def main(win):
                     current_piece.x -= 1
                     if not (valid_space(current_piece, grid)):
                         current_piece.x += 1
-                if event.key == pygame.K_RIGHT:
+
+                elif event.key == pygame.K_RIGHT:
                     current_piece.x += 1
                     if not (valid_space(current_piece, grid)):
-                        current_piece.x += 1
+                        current_piece.x -= 1
+
+                elif event.key == pygame.K_UP:
+                    current_piece.rotation = current_piece.rotation + 1 % len(current_piece.shape)
+                    if not valid_space(current_piece, grid):
+                        current_piece.rotation = current_piece.rotation - 1 % len(current_piece.shape)
+
                 if event.key == pygame.K_DOWN:
                     current_piece.y += 1
                     if not (valid_space(current_piece, grid)):
                         current_piece.y -= 1
-                if event.key == pygame.K_UP:
-                    current_piece.rotation += 1
-                    if not (valid_space(current_piece, grid)):
-                        current_piece -= 1
 
         shape_pos = convert_shape_format(current_piece)
 
