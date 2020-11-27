@@ -14,7 +14,7 @@ except socket.error as e:
     str(e)
 
 sock.listen(2)  # open the post for 2 people and listen
-print("We are waiting for the connection. Server has started")
+print("I am waiting for the connection. Server has started")
 
 
 def thread_client(conn):
@@ -25,20 +25,23 @@ def thread_client(conn):
             reply = data.decode('utf-8')
 
             if not data:
-                print('Disconnected')
+                print('I have disconnected')
                 break
             else:
-                print(f'Received: {reply}')
-                print(f'Sending: {reply}')
+                print(f'I have received: {reply}')
+                print(f'I am sending: {reply}')
 
             conn.sendall(str.encode(reply))
         except:
             break
 
+    print('I have lost connection...')
+    conn.close()
+
 
 while True:
     conn, addr = sock.accept()  # Accept the connection
-    print(f'Connected to: {addr}')
+    print(f'I have connected to: {addr}')
 
     start_new_thread(thread_client, (conn, ))
 
