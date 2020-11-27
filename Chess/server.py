@@ -2,7 +2,7 @@ import socket
 from _thread import *
 import sys
 
-server = ''
+server = '192.168.1.97'  # ipconfig - to get the IPaddr IPv4 (Address +/- = Default Gateway)
 port = 5555
 
 # initialize the socket
@@ -14,7 +14,7 @@ except socket.error as e:
     str(e)
 
 sock.listen(2)  # open the post for 2 people and listen
-print("We are waiting  fot the connection. Server has started")
+print("We are waiting for the connection. Server has started")
 
 
 def thread_client(conn):
