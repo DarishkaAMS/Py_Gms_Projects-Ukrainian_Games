@@ -10,8 +10,8 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # types of connections
 
 try:
     sock.bind((server, port))
-except socket.error as e:
-    str(e)
+except socket.error as error:
+    str(error)
 
 sock.listen(2)  # open the post for 2 people and listen
 print("I am waiting for the connection. Server has started")
