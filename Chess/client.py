@@ -2,7 +2,7 @@ import pygame
 
 width = 500
 height = 500
-win = pygame.display.set_mode(width, height)
+win = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Client")
 
 client_number = 0
@@ -36,18 +36,28 @@ class Player():
         if keys[pygame.K_DOWN]:
             self.y += self.vel
 
+        self.rect = (self.x, self.y, self.width, self.height)
 
-def redraw_window():
+
+def redraw_window(win, player):
     win.fill((0, 191, 255))
+    player.draw_rect(win)
     pygame.display.update()
 
 
 def main():
     run = True
+    player1 = Player(50, 50, 100, 100, (0, 255, 204))
+    clock = pygame.time.Clock()
+
     while run:
+        clock.tick(60)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
                 pygame.quit()
 
-        redraw_window()
+        player1.move()
+        redraw_window(win, player1)
+
+main()
