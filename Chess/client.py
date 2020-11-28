@@ -58,11 +58,14 @@ def redraw_window(win, player):
 def main():
     run = True
     netw = Network()
-    start_pos = netw.get_pos()
-    player1 = Player(50, 50, 100, 100, (0, 255, 204))
+    start_pos = read_pos((netw.get_pos()))
+    player1 = Player(start_pos[0], start_pos[1], 100, 100, (0, 255, 204))
+    player2 = Player(0, 0, 100, 100, (0, 255, 204))
     clock = pygame.time.Clock()
 
     while run:
+
+
         clock.tick(60)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
