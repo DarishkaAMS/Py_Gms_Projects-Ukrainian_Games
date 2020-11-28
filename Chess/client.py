@@ -45,6 +45,10 @@ def read_pos(str):
     return int(str[0], int(str[1]))
 
 
+def make_pos(tup):
+    return str(tup[0] + ',' + str[1])
+
+
 def redraw_window(win, player):
     win.fill((0, 191, 255))
     player.draw_rect(win)
