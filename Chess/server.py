@@ -1,70 +1,75 @@
 import socket
 from _thread import *
-import sys
+import pickle
+from game import Game
 
-server = '192.168.1.97'  # ipconfig - to get the IPaddr IPv4 (Address +/- = Default Gateway)
+server = "10.11.250.207"
 port = 5555
 
-# initialize the socket
-sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # types of connections
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 try:
-    sock.bind((server, port))
-except socket.error as error:
-    str(error)
+    s.bind((server, port))
+except socket.error as e:
+    str(e)
 
-sock.listen(2)  # open the post for 2 people and listen
-print("I am waiting for the connection. Server has started")
+s.listen(2)
+print("Waiting for a connection, Server Started")
 
-
-def read_pos(str):
-    str = str.split(',')
-    return int(str[0]), int(str[1])
-
-
-def make_pos(tup):
-    return str(tup[0] + ',' + str[1])
+connected = set()
+games = {}
+idCount = 0
 
 
-pos = [(0, 0), (100, 100)]  # hold positions of the players
+def threaded_client(conn, p, gameId):
+    global idCount
+    conn.send(str.encode(str(p)))
 
-
-def thread_client(conn, player):
-    conn.send(str.encode(make_pos(pos[player])))
-    # conn.send(str.encode('I have connected'))
-    reply = ''
+    reply = ""
     while True:
         try:
-            data = read_pos(conn.recv(2048).decode())
-            # reply = data.decode('utf-8')
-            pos[player] = data
+            data = conn.recv(4096).decode()
 
-            if not data:
-                print('I have disconnected')
-                break
-            else:
-                if player == 1:
-                    reply = pos[0]
+            if gameId in games:
+                game = games[gameId]
+
+                if not data:
+                    break
                 else:
-                    reply = pos[1]
+                    if data == "reset":
+                        game.resetWent()
+                    elif data != "get":
+                        game.play(p, data)
 
-                print(f'I have received: {data}')
-                print(f'I am sending: {reply}')
-
-            conn.sendall(str.encode(make_pos(reply)))
+                    conn.sendall(pickle.dumps(game))
+            else:
+                break
         except:
             break
 
-    print('I have lost connection...')
+    print("Lost connection")
+    try:
+        del games[gameId]
+        print("Closing Game", gameId)
+    except:
+        pass
+    idCount -= 1
     conn.close()
 
 
-current_player = 0
-
 while True:
-    conn, addr = sock.accept()  # Accept the connection
-    print(f'I have connected to: {addr}')
+    conn, addr = s.accept()
+    print("Connected to:", addr)
 
-    start_new_thread(thread_client, (conn, current_player))
-    current_player += 1  # Keep tracking which player we are using
+    idCount += 1
+    p = 0
+    gameId = (idCount - 1)//2
+    if idCount % 2 == 1:
+        games[gameId] = Game(gameId)
+        print("Creating a new game...")
+    else:
+        games[gameId].ready = True
+        p = 1
 
+
+    start_new_thread(threaded_client, (conn, p, gameId))
