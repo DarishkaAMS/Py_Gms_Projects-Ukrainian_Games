@@ -16,34 +16,42 @@ except socket.error as error:
 sock.listen(2)  # open the post for 2 people and listen
 print("I am waiting for the connection. Server has started")
 
-pos = [(0, 0), (100, 100)]  # hold positions of the players
-
 
 def read_pos(str):
     str = str.split(',')
-    return int(str[0], int(str[1]))
+    return int(str[0]), int(str[1])
 
 
 def make_pos(tup):
     return str(tup[0] + ',' + str[1])
 
 
-def thread_client(conn, current_player):
-    conn.send(str.encode('I have connected'))
+pos = [(0, 0), (100, 100)]  # hold positions of the players
+
+
+def thread_client(conn, player):
+    conn.send(str.encode(make_pos(pos[player])))
+    # conn.send(str.encode('I have connected'))
     reply = ''
     while True:
         try:
-            data = conn.recv(2048)
-            reply = data.decode('utf-8')
+            data = read_pos(conn.recv(2048).decode())
+            # reply = data.decode('utf-8')
+            pos[player] = data
 
             if not data:
                 print('I have disconnected')
                 break
             else:
-                print(f'I have received: {reply}')
+                if player == 1:
+                    reply = pos[0]
+                else:
+                    reply = pos[1]
+
+                print(f'I have received: {data}')
                 print(f'I am sending: {reply}')
 
-            conn.sendall(str.encode(reply))
+            conn.sendall(str.encode(make_pos(reply)))
         except:
             break
 
