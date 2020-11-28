@@ -40,6 +40,11 @@ class Player():
         self.rect = (self.x, self.y, self.width, self.height)
 
 
+def read_pos(str):
+    str = str.split(',')
+    return int(str[0], int(str[1]))
+
+
 def redraw_window(win, player):
     win.fill((0, 191, 255))
     player.draw_rect(win)
